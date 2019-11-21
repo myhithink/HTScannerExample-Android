@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tip: "
+                android:textColor="@android:color/holo_red_dark"/>
+
+            <TextView
+                android:id="@+id/tv_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_red_dark"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_license"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:hint="input license"/>
+
+        <Button
+            android:id="@+id/btn_init_scanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="initScanner"
+            android:textAllCaps="false"
+            android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/btn_check_license_valid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="isLicenseValid"
+            android:textAllCaps="false"
+            android:layout_gravity="center_horizontal"/>
+
+        <include
+            layout="@layout/view_start_scan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btn_jump_to_setting_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="jump to setting page"
+            android:textAllCaps="false"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+</ScrollView>
