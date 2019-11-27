@@ -5,8 +5,10 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.hithink.scannerhd.sdk.HTScanner;
@@ -14,6 +16,8 @@ import com.hithink.scannerhd.sdk.HTScannerProject;
 import com.hithink.scannerhd.sdk.callback.HTScannerExportCallback;
 import com.hithink.scannerhd.sdk.callback.HTScannerProjectCallback;
 import com.hithink.scannerhd.sdk.constant.HTScannerExportType;
+import com.hithink.scannerhd.sdk.custom.HTScannerConfigId;
+import com.hithink.scannerhd.sdk.custom.HTScannerPageId;
 
 import java.io.File;
 import java.util.List;
@@ -32,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText mExportNameEditText;
     private Button mExportButton;
     private Button mJumpToSettingPageButton;
+
+    private Switch mMultiPageModeSwitch;
+    private Switch mShowMutiPageModeSwitch;
+    private Switch mAutoCaptureModeSwitch;
+    private Switch mShowAutoCaptureModeShowSwitch;
 
     private HTScanner mHTScanner;
     private HTScannerProject mHtScannerProject;
@@ -58,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         mExportNameEditText = findViewById(R.id.et_export_name);
         mExportButton = findViewById(R.id.btn_export);
         mJumpToSettingPageButton = findViewById(R.id.btn_jump_to_setting_page);
+
+        mMultiPageModeSwitch = findViewById(R.id.switch_multi_page);
+        mShowMutiPageModeSwitch = findViewById(R.id.switch_show_multi_page_mode);
+        mAutoCaptureModeSwitch = findViewById(R.id.switch_auto_capture_mode);
+        mShowAutoCaptureModeShowSwitch = findViewById(R.id.switch_show_auto_capture_mode);
+
     }
 
     private void initData(){
@@ -161,6 +176,58 @@ public class MainActivity extends AppCompatActivity {
                     updateTip("jump to setting page success");
                 }else{
                     updateTip("jump to setting page failed code=" + code);
+                }
+            }
+        });
+
+        mMultiPageModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int code = mHTScanner.setUIConfig(HTScannerPageId.HXScannerCapturePage,
+                        HTScannerConfigId.HTScannerCapturePageSetMultiPages, isChecked);
+                if(code == 0){
+                    updateTip("switch single/batch mode success");
+                }else{
+                    updateTip("switch single/batch mode failed code=" + code);
+                }
+            }
+        });
+
+        mShowMutiPageModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int code = mHTScanner.setUIConfig(HTScannerPageId.HXScannerCapturePage,
+                        HTScannerConfigId.HTScannerCapturePageShowMultiPages, isChecked);
+                if(code == 0){
+                    updateTip("show/hide \"batch\" switch success");
+                }else{
+                    updateTip("show/hide \"batch\" switch failed code=" + code);
+                }
+            }
+        });
+
+        mAutoCaptureModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int code = mHTScanner.setUIConfig(HTScannerPageId.HXScannerCapturePage,
+                        HTScannerConfigId.HTScannerCapturePageSetAutoCapture, isChecked);
+                if(code == 0){
+                    updateTip("switch manual/auto mode success");
+                }else{
+                    updateTip("switch manual/auto mode failed code=" + code);
+                }
+            }
+        });
+
+        mShowAutoCaptureModeShowSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int code = mHTScanner.setUIConfig(HTScannerPageId.HXScannerCapturePage,
+                        HTScannerConfigId.HTScannerCapturePageShowAutoCapture, isChecked);
+                if(code == 0){
+                    updateTip("show/hide \"auto\" switch success");
+                }else{
+                    updateTip("show/hide \"auto\" switch failed code=" + code);
                 }
             }
         });
