@@ -31,5 +31,5 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    implementation 'com.hithink.scannerhd:scanner-sdk:1.0.1'
+    implementation 'com.hithink.scannerhd:scanner-sdk:1.0.2'
 }

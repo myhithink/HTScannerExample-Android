@@ -2,7 +2,6 @@ package com.hithink.scannerhd.sdk.demo;
 
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -10,6 +9,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hithink.scannerhd.sdk.HTScanner;
 import com.hithink.scannerhd.sdk.HTScannerProject;
