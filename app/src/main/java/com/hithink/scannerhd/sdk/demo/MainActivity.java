@@ -140,13 +140,13 @@ public class MainActivity extends AppCompatActivity {
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                String exportDir = dir.getAbsolutePath();
+                String exportRelativeDir = "scannerDemo";
                 int exportType = HTScannerExportType.HT_SCANNER_EXPORT_TYPE_IMAGE;
                 if(mExportTypePdfRadioButton.isChecked()){
                     exportType = HTScannerExportType.HT_SCANNER_EXPORT_TYPE_PDF;
                 }
                 String exportName = mExportNameEditText.getText().toString().trim();
-                int code = mHtScannerProject.export(exportDir, exportName, exportType, new HTScannerExportCallback() {
+                int code = mHtScannerProject.export(exportRelativeDir, exportName, exportType, new HTScannerExportCallback() {
                     @Override
                     public void onExportSuccess(List<String> list) {
                         String msg;
