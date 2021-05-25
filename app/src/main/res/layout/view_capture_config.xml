@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:text="Default batch mode single/batch:"
             android:layout_marginRight="10dp"
             android:gravity="right"/>
@@ -38,7 +38,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:text="&quot;Batch&quot; switch hide/show:"
             android:layout_marginRight="10dp"
             android:gravity="right"/>
@@ -63,7 +63,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:text="Default capture mode manual/auto:"
             android:layout_marginRight="10dp"
             android:gravity="right"/>
@@ -88,7 +88,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:text="&quot;Auto&quot; switch hide/show:"
             android:layout_marginRight="10dp"
             android:gravity="right"/>
@@ -101,6 +101,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="show/hide capture picker only common mode:"
+            android:layout_marginRight="10dp"
+            android:gravity="right"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Switch
+                android:id="@+id/switch_show_capture_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Switch mShowMutiPageModeSwitch;
     private Switch mAutoCaptureModeSwitch;
     private Switch mShowAutoCaptureModeShowSwitch;
+    private Switch mShowCapturePickerSwitch;
 
     private HTScanner mHTScanner;
     private HTScannerProject mHtScannerProject;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         mShowMutiPageModeSwitch = findViewById(R.id.switch_show_multi_page_mode);
         mAutoCaptureModeSwitch = findViewById(R.id.switch_auto_capture_mode);
         mShowAutoCaptureModeShowSwitch = findViewById(R.id.switch_show_auto_capture_mode);
+        mShowCapturePickerSwitch = findViewById(R.id.switch_show_capture_picker);
 
     }
 
@@ -229,6 +231,19 @@ public class MainActivity extends AppCompatActivity {
                     updateTip("show/hide \"auto\" switch success");
                 }else{
                     updateTip("show/hide \"auto\" switch failed code=" + code);
+                }
+            }
+        });
+
+        mShowCapturePickerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int code = mHTScanner.setUIConfig(HTScannerPageId.HXScannerCapturePage,
+                        HTScannerConfigId.HTScannerCapturePageHideCapturePicker, isChecked);
+                if(code == 0){
+                    updateTip("show/hide capture picker success");
+                }else{
+                    updateTip("show/hide capture picker failed code=" + code);
                 }
             }
         });
