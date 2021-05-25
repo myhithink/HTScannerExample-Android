@@ -1,11 +1,15 @@
 package com.hithink.scannerhd.sdk.demo;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -20,6 +24,7 @@ import com.hithink.scannerhd.sdk.callback.HTScannerProjectCallback;
 import com.hithink.scannerhd.sdk.constant.HTScannerExportType;
 import com.hithink.scannerhd.sdk.custom.HTScannerConfigId;
 import com.hithink.scannerhd.sdk.custom.HTScannerPageId;
+import com.hithink.scannerhd.selectpiclib.ImageLoadEngine;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -85,6 +90,48 @@ public class MainActivity extends AppCompatActivity {
 
     private void initData(){
         mHTScanner = HTScanner.instance();
+        customImageLoadEngine();
+    }
+
+    private void customImageLoadEngine(){
+        ImageLoadEngine imageLoadEngine = new ImageLoadEngine() {
+            @Override
+            public void loadPicture(ImageView imageView, String imageUrl, int width, int height, Drawable placeDrawable, boolean withCache) {
+
+            }
+
+            @Override
+            public void clearMemory() {
+
+            }
+
+            @Override
+            public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public boolean supportAnimatedGif() {
+                return false;
+            }
+        };
+        // Host app can custom imageLoader, Scanner SDK will use GlideImageLoadEngine if not set
+//        mHTScanner.setImageLoadEngine(imageLoadEngine);
     }
 
     private HTScannerCommonConfig createHTScannerCommonConfig(){
