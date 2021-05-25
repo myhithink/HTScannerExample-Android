@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hithink.scannerhd.sdk.HTScanner;
+import com.hithink.scannerhd.sdk.HTScannerCommonConfig;
 import com.hithink.scannerhd.sdk.HTScannerProject;
 import com.hithink.scannerhd.sdk.callback.HTScannerExportCallback;
 import com.hithink.scannerhd.sdk.callback.HTScannerProjectCallback;
@@ -86,12 +87,25 @@ public class MainActivity extends AppCompatActivity {
         mHTScanner = HTScanner.instance();
     }
 
+    private HTScannerCommonConfig createHTScannerCommonConfig(){
+        return new HTScannerCommonConfig.Builder()
+                // set maximum number of pictures be selected in normal mode
+                .setMaxCaptureImageCountInCommonMode(100)
+                // whether to add pictures serially
+                .setAddImageInSerialMode(false)
+                // whether check support scan quality
+                .setCheckSupportScanQuality(false)
+                // set default color filter type . e.g. HTScannerCommonConfig.Builder.ENHANCE
+                .setDefaultColorFilterType(HTScannerCommonConfig.Builder.ENHANCE)
+                .build();
+    }
+
     private void initListener(){
         mInitScannerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int code = mHTScanner.initScanner(MainActivity.this.getApplication(),
-                        mInputLicenseEditText.getText().toString().trim());
+                        mInputLicenseEditText.getText().toString().trim(), createHTScannerCommonConfig());
                 if(code == 0){
                     updateTip("init Scanner success");
                 }else{
