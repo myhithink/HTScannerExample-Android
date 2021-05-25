@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mCheckLicenseValidButton;
     private RadioButton mExportTypeImageRadioButton;
     private RadioButton mExportTypePdfRadioButton;
+    private RadioButton mrExportTypeThumbnailRadioButton;
     private Button mStartScanButton;
     private EditText mExportNameEditText;
     private Button mExportButton;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mCheckLicenseValidButton = findViewById(R.id.btn_check_license_valid);
         mExportTypeImageRadioButton = findViewById(R.id.rb_image);
         mExportTypePdfRadioButton = findViewById(R.id.rb_pdf);
+        mrExportTypeThumbnailRadioButton = findViewById(R.id.rb_thumbnail);
         mStartScanButton = findViewById(R.id.btn_start_scan);
         mExportNameEditText = findViewById(R.id.et_export_name);
         mExportButton = findViewById(R.id.btn_export);
@@ -154,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
                 int exportType = HTScannerExportType.HT_SCANNER_EXPORT_TYPE_IMAGE;
                 if(mExportTypePdfRadioButton.isChecked()){
                     exportType = HTScannerExportType.HT_SCANNER_EXPORT_TYPE_PDF;
+                }else if(mrExportTypeThumbnailRadioButton.isChecked()){
+                    exportType = HTScannerExportType.HT_SCANNER_EXPORT_TYPE_THUMBNAIL;
                 }
                 String exportName = mExportNameEditText.getText().toString().trim();
                 int code = mHtScannerProject.export(exportRelativeDir, exportName, exportType, new HTScannerExportCallback() {
