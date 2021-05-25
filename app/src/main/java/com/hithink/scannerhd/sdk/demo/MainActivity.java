@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Switch mAutoCaptureModeSwitch;
     private Switch mShowAutoCaptureModeShowSwitch;
     private Switch mShowCapturePickerSwitch;
+    private Switch mShowOcrSwitch;
 
     private HTScanner mHTScanner;
     private HTScannerProject mHtScannerProject;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         mAutoCaptureModeSwitch = findViewById(R.id.switch_auto_capture_mode);
         mShowAutoCaptureModeShowSwitch = findViewById(R.id.switch_show_auto_capture_mode);
         mShowCapturePickerSwitch = findViewById(R.id.switch_show_capture_picker);
-
+        mShowOcrSwitch = findViewById(R.id.switch_ocr);
     }
 
     private void initData(){
@@ -258,6 +259,18 @@ public class MainActivity extends AppCompatActivity {
                     updateTip("show/hide capture picker success");
                 }else{
                     updateTip("show/hide capture picker failed code=" + code);
+                }
+            }
+        });
+        mShowOcrSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int code = mHTScanner.setUIConfig(HTScannerPageId.HTScannerPreviewPage,
+                        HTScannerConfigId.HTScannerPreviewPageHideOcrButton, isChecked);
+                if(code == 0){
+                    updateTip("show/hide OCR button success");
+                }else{
+                    updateTip("show/hide OCR button failed code=" + code);
                 }
             }
         });

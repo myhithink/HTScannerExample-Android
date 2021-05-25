@@ -56,6 +56,11 @@
             android:layout_height="wrap_content"/>
 
         <include
+            layout="@layout/view_pre_handler_config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include
             layout="@layout/view_start_scan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
