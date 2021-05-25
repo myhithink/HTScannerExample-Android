@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+`
+    <color name="scanner_titlebar_bg_color">#008577</color>
+    <color name="scanner_titlebar_left_tv_color">@android:color/white</color>
+    <color name="scanner_titlebar_right_tv_color">@android:color/white</color>
+    <color name="scanner_titlebar_title_tv_color">@android:color/white</color>
+    <color name="scanner_album_primary_color">#008577</color>
+    <color name="scanner_album_text_color">@android:color/white</color>
+    <color name="scanner_album_text_disable_color">#4Dffffff</color>
 </resources>
