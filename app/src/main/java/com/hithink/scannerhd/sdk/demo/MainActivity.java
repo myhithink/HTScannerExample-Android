@@ -21,6 +21,7 @@ import com.hithink.scannerhd.sdk.custom.HTScannerConfigId;
 import com.hithink.scannerhd.sdk.custom.HTScannerPageId;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -115,7 +116,16 @@ public class MainActivity extends AppCompatActivity {
                     public void onScanResult(boolean finished, HTScannerProject htScannerProject) {
                         if(finished){
                             mHtScannerProject = htScannerProject;
-                            updateTip("scan success");
+                            String title = null;
+                            int pageCount = 0;
+                            long createTime = 0L;
+                            if(null != mHtScannerProject){
+                                title = mHtScannerProject.getTitle();
+                                pageCount = mHtScannerProject.getPageCount();
+                                createTime = mHtScannerProject.getCreateTime();
+                            }
+                            updateTip(String.format("scan success title:%1$s, pageCount:%2$d, createTime:%3$s",
+                                    title, pageCount, formatTime(createTime)));
                         }else{
                             updateTip("user cancelled scan");
                         }
@@ -251,5 +261,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateTip(String msg){
         mTipTextView.setText(msg);
+    }
+
+    private SimpleDateFormat mSimpleDateFormat;
+    private String formatTime(long time){
+        if(null == mSimpleDateFormat){
+            mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        }
+        return mSimpleDateFormat.format(time * 1000);
     }
 }
