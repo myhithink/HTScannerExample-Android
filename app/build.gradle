@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.hithink.scannerhd.sdk.demo"
-        minSdkVersion 15
-        targetSdkVersion 28
+        minSdkVersion 18
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -26,10 +26,16 @@ android {
     packagingOptions {
         pickFirst  'META-INF/*'
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    implementation 'com.hithink.scannerhd:scanner-sdk:1.0.2'
+    implementation 'com.hithink.scannerhd:scanner-sdk:1.0.5'
 }

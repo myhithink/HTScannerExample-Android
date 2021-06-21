@@ -1,11 +1,15 @@
 package com.hithink.scannerhd.sdk.demo;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -13,14 +17,17 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hithink.scannerhd.sdk.HTScanner;
+import com.hithink.scannerhd.sdk.HTScannerCommonConfig;
 import com.hithink.scannerhd.sdk.HTScannerProject;
 import com.hithink.scannerhd.sdk.callback.HTScannerExportCallback;
 import com.hithink.scannerhd.sdk.callback.HTScannerProjectCallback;
 import com.hithink.scannerhd.sdk.constant.HTScannerExportType;
 import com.hithink.scannerhd.sdk.custom.HTScannerConfigId;
 import com.hithink.scannerhd.sdk.custom.HTScannerPageId;
+import com.hithink.scannerhd.selectpiclib.ImageLoadEngine;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mCheckLicenseValidButton;
     private RadioButton mExportTypeImageRadioButton;
     private RadioButton mExportTypePdfRadioButton;
+    private RadioButton mrExportTypeThumbnailRadioButton;
     private Button mStartScanButton;
     private EditText mExportNameEditText;
     private Button mExportButton;
@@ -42,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private Switch mShowMutiPageModeSwitch;
     private Switch mAutoCaptureModeSwitch;
     private Switch mShowAutoCaptureModeShowSwitch;
+    private Switch mShowCapturePickerSwitch;
+    private Switch mShowOcrSwitch;
 
     private HTScanner mHTScanner;
     private HTScannerProject mHtScannerProject;
@@ -64,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         mCheckLicenseValidButton = findViewById(R.id.btn_check_license_valid);
         mExportTypeImageRadioButton = findViewById(R.id.rb_image);
         mExportTypePdfRadioButton = findViewById(R.id.rb_pdf);
+        mrExportTypeThumbnailRadioButton = findViewById(R.id.rb_thumbnail);
         mStartScanButton = findViewById(R.id.btn_start_scan);
         mExportNameEditText = findViewById(R.id.et_export_name);
         mExportButton = findViewById(R.id.btn_export);
@@ -73,11 +84,67 @@ public class MainActivity extends AppCompatActivity {
         mShowMutiPageModeSwitch = findViewById(R.id.switch_show_multi_page_mode);
         mAutoCaptureModeSwitch = findViewById(R.id.switch_auto_capture_mode);
         mShowAutoCaptureModeShowSwitch = findViewById(R.id.switch_show_auto_capture_mode);
-
+        mShowCapturePickerSwitch = findViewById(R.id.switch_show_capture_picker);
+        mShowOcrSwitch = findViewById(R.id.switch_ocr);
     }
 
     private void initData(){
         mHTScanner = HTScanner.instance();
+        customImageLoadEngine();
+    }
+
+    private void customImageLoadEngine(){
+        ImageLoadEngine imageLoadEngine = new ImageLoadEngine() {
+            @Override
+            public void loadPicture(ImageView imageView, String imageUrl, int width, int height, Drawable placeDrawable, boolean withCache) {
+
+            }
+
+            @Override
+            public void clearMemory() {
+
+            }
+
+            @Override
+            public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public boolean supportAnimatedGif() {
+                return false;
+            }
+        };
+        // Host app can custom imageLoader, Scanner SDK will use GlideImageLoadEngine if not set
+//        mHTScanner.setImageLoadEngine(imageLoadEngine);
+    }
+
+    private HTScannerCommonConfig createHTScannerCommonConfig(){
+        return new HTScannerCommonConfig.Builder()
+                // set maximum number of pictures be selected in normal mode
+                .setMaxCaptureImageCountInCommonMode(100)
+                // whether to add pictures serially
+                .setAddImageInSerialMode(false)
+                // whether check support scan quality
+                .setCheckSupportScanQuality(false)
+                // set default color filter type . e.g. HTScannerCommonConfig.Builder.ENHANCE
+                .setDefaultColorFilterType(HTScannerCommonConfig.Builder.ENHANCE)
+                .build();
     }
 
     private void initListener(){
@@ -85,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int code = mHTScanner.initScanner(MainActivity.this.getApplication(),
-                        mInputLicenseEditText.getText().toString().trim());
+                        mInputLicenseEditText.getText().toString().trim(), createHTScannerCommonConfig());
                 if(code == 0){
                     updateTip("init Scanner success");
                 }else{
@@ -113,7 +180,16 @@ public class MainActivity extends AppCompatActivity {
                     public void onScanResult(boolean finished, HTScannerProject htScannerProject) {
                         if(finished){
                             mHtScannerProject = htScannerProject;
-                            updateTip("scan success");
+                            String title = null;
+                            int pageCount = 0;
+                            long createTime = 0L;
+                            if(null != mHtScannerProject){
+                                title = mHtScannerProject.getTitle();
+                                pageCount = mHtScannerProject.getPageCount();
+                                createTime = mHtScannerProject.getCreateTime();
+                            }
+                            updateTip(String.format("scan success title:%1$s, pageCount:%2$d, createTime:%3$s",
+                                    title, pageCount, formatTime(createTime)));
                         }else{
                             updateTip("user cancelled scan");
                         }
@@ -138,13 +214,15 @@ public class MainActivity extends AppCompatActivity {
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                String exportDir = dir.getAbsolutePath();
+                String exportRelativeDir = "scannerDemo";
                 int exportType = HTScannerExportType.HT_SCANNER_EXPORT_TYPE_IMAGE;
                 if(mExportTypePdfRadioButton.isChecked()){
                     exportType = HTScannerExportType.HT_SCANNER_EXPORT_TYPE_PDF;
+                }else if(mrExportTypeThumbnailRadioButton.isChecked()){
+                    exportType = HTScannerExportType.HT_SCANNER_EXPORT_TYPE_THUMBNAIL;
                 }
                 String exportName = mExportNameEditText.getText().toString().trim();
-                int code = mHtScannerProject.export(exportDir, exportName, exportType, new HTScannerExportCallback() {
+                int code = mHtScannerProject.export(exportRelativeDir, exportName, exportType, new HTScannerExportCallback() {
                     @Override
                     public void onExportSuccess(List<String> list) {
                         String msg;
@@ -232,9 +310,42 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mShowCapturePickerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int code = mHTScanner.setUIConfig(HTScannerPageId.HXScannerCapturePage,
+                        HTScannerConfigId.HTScannerCapturePageHideCapturePicker, isChecked);
+                if(code == 0){
+                    updateTip("show/hide capture picker success");
+                }else{
+                    updateTip("show/hide capture picker failed code=" + code);
+                }
+            }
+        });
+        mShowOcrSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int code = mHTScanner.setUIConfig(HTScannerPageId.HTScannerPreviewPage,
+                        HTScannerConfigId.HTScannerPreviewPageHideOcrButton, isChecked);
+                if(code == 0){
+                    updateTip("show/hide OCR button success");
+                }else{
+                    updateTip("show/hide OCR button failed code=" + code);
+                }
+            }
+        });
     }
 
     private void updateTip(String msg){
         mTipTextView.setText(msg);
+    }
+
+    private SimpleDateFormat mSimpleDateFormat;
+    private String formatTime(long time){
+        if(null == mSimpleDateFormat){
+            mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        }
+        return mSimpleDateFormat.format(time * 1000);
     }
 }
